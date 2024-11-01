@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh Sách Người Dùng</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .flex {
+            display: flex;
+            align-items: center;
+        }
+
+        .container {
+            padding: 0 15px;
+            min-height: 100vh;
+            justify-content: center;
+            background: #f0f2f5;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        h1 {
+            color: #1877f2;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background: #1877f2;
+            color: #fff;
+        }
+
+        @media (max-width: 460px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            table {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container flex">
+        <h1>Danh Sách Người Dùng</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Mật Khẩu</th>
+                </tr>
+            </thead>
+            <tbody id="userTable">
+                <!-- User data will be populated here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('http://localhost:3000/list-users')
+                .then(response => response.json())
+                .then(users => {
+                    const userTable = document.getElementById('userTable');
+                    users.forEach(user => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `<td>${user.email}</td><td>${user.password}</td>`;
+                        userTable.appendChild(row);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching users:', error);
+                    const userTable = document.getElementById('userTable');
+                    userTable.innerHTML = '<tr><td colspan="2">Không thể tải người dùng.</td></tr>';
+                });
+        });
+    </script>
+</body>
+</html>
